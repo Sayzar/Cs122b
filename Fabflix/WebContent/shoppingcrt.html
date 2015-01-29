@@ -1,0 +1,41 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+  <TITLE>Shopping Cart Test</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FDF5E6">
+<H1 ALIGN="CENTER">Shopping Cart</H1>
+<FORM ACTION="/Fabflix/CheckOut"
+      METHOD="GET">
+<table style="width:100%">
+	<tr>
+		<th>Movie</th>
+		<th>Price</th>
+		<th>Quantity</th>
+		<th></th>
+		<th></th>
+		</tr>
+	<tr ALIGN="CENTER">
+		<td> Kalun </td>
+		<td> 15.99 </td>
+		<td>
+			<form>
+			<input type="number" name ="quantity">
+			</form> 
+		</td>
+		<td> 
+			<button type="button"> Update</button>
+		</td>
+		<td>
+			<button type= "button"> Remove</button>
+		</td>	
+	</tr>
+</table>
+  <CENTER>
+    <INPUT TYPE="SUBMIT" VALUE="Submit Order">
+  </CENTER>
+</FORM>
+
+</BODY>
