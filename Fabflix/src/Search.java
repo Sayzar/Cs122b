@@ -1,3 +1,6 @@
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -67,7 +70,16 @@ public class Search extends HttpServlet {
 			request.setAttribute("movies", movies);	
 			request.getRequestDispatcher("/MovieListPage").include(request, response);
 		//	HttpSession session = request.getSession();
-		
+            List<String> titles= new ArrayList<String>();
+            for(Movie m : movies)
+            {
+                titles.add(m.getTitle());
+            }
+
+            JSONArray jarray = new JSONArray(titles);
+            String suggestions = new JSONObject(jarray).toString();
+
+            out.write(suggestions);
 		//	view.forward(request, response);
 
 		} catch (Exception e) {
