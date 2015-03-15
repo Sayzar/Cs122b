@@ -1,16 +1,18 @@
 package com.group9.cs122b.moviequiz;
 
 import android.content.Intent;
+
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 
+
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

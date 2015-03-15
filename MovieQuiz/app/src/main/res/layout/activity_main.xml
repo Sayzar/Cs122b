@@ -10,11 +10,12 @@
             android:layout_width="160dp"
             android:layout_height="50dp"
             android:gravity="center"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:text="Take Quiz"
+        android:text="Take Quiz"
             android:textStyle="bold"
-            android:textSize="32sp"/>
+            android:textSize="32sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="154dp" />
 
     <TextView
             android:id="@+id/quizStatsButton"
