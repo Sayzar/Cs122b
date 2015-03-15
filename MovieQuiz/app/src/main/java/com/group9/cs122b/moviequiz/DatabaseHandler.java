@@ -162,7 +162,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         }
 
         //get random 4 years
-        String dirQuery = "SELECT DISTINCT m.year FROM movies m WHERE m.year !="+Integer.parseInt(year)+" ORDER BY RANDOM() LIMIT 4";
+        String dirQuery = "SELECT m.year FROM movies m WHERE m.year != '"+year+"' GROUP BY m.year ORDER BY RANDOM() LIMIT 4";
         cursor = dataBase.rawQuery(dirQuery,null);
         if(cursor!= null)
         {
@@ -197,8 +197,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
                 cursor.close();
             }
 
-        String wrongQuery = "SELECT first_name, last_name FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
-                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE m.id !=" + Integer.parseInt(mID) + " ORDER BY RANDOM() LIMIT 4";
+        String wrongQuery = "SELECT  first_name, last_name FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE m.id != '" + mID + "' ORDER BY RANDOM() LIMIT 4";
         cursor = dataBase.rawQuery(wrongQuery, null);
         if(cursor != null)
         {
@@ -221,29 +221,36 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         Cursor cursor;
         String mID = "";
 
-        String movieQuery = "SELECT first_name, last_name, sm.movie_id, title FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
-                + "ON m.id = sm.movie_id AND sm.star_id = s.id) GROUP BY sm.movie_id HAVING count(*) >3 ORDER BY RANDOM() LIMIT 4";
+        String movieQuery = "SELECT sm.movie_id, title FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) GROUP BY sm.movie_id HAVING count(*) >3 ORDER BY RANDOM() LIMIT 1";
         cursor = dataBase.rawQuery(movieQuery, null);
         if (cursor != null ) {
 
                  if (cursor.moveToFirst()) {
-                     results[0] = cursor.getString(3);
-                     results[2] = cursor.getString(0) + " " + cursor.getString(1);
-                     mID = cursor.getString(2);
+                     results[0] = cursor.getString(1);
+                     mID = cursor.getString(0);
                  }
-                if(cursor.moveToNext())
-                    results[3] = cursor.getString(0) + " " + cursor.getString(1);
-                if(cursor.moveToNext())
-                    results[4] = cursor.getString(0) + " " + cursor.getString(1);
-                if(cursor.moveToNext())
-                    results[5] = cursor.getString(0) + " " + cursor.getString(1);
-                cursor.close();
-
             cursor.close();
         }
 
+        String starQuery = "SELECT first_name, last_name FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.movie_id = '"+mID+"' GROUP BY sm.star_id ORDER BY RANDOM() LIMIT 4";
+
+        cursor = dataBase.rawQuery(starQuery, null);
+        if(cursor != null) {
+            if (cursor.moveToFirst())
+                results[2] = cursor.getString(0) + " " + cursor.getString(1);
+            if (cursor.moveToNext())
+                results[3] = cursor.getString(0) + " " + cursor.getString(1);
+            if (cursor.moveToNext())
+                results[4] = cursor.getString(0) + " " + cursor.getString(1);
+            if (cursor.moveToNext())
+                results[5] = cursor.getString(0) + " " + cursor.getString(1);
+
+            cursor.close();
+        }
         String wrongQuery = "SELECT first_name, last_name FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
-                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.movie_id !=" + Integer.parseInt(mID) + " ORDER BY RANDOM() LIMIT 1";
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.movie_id != '" + mID + "' ORDER BY RANDOM() LIMIT 1";
         cursor = dataBase.rawQuery(wrongQuery, null);
         if(cursor != null)
         {
@@ -263,25 +270,34 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         Cursor cursor;
         String mID = "";
         //"In which movie did the stars X and Y appear together?"
-        String movieQuery = "SELECT first_name, last_name, sm.movie_id, title FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
-                + "ON m.id = sm.movie_id AND sm.star_id = s.id) GROUP BY sm.movie_id HAVING count(*) >2 ORDER BY RANDOM() LIMIT 2";
+        String movieQuery = "SELECT sm.movie_id, title FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) GROUP BY sm.movie_id HAVING count(*) >2 ORDER BY RANDOM() LIMIT 1";
         cursor = dataBase.rawQuery(movieQuery, null);
         if(cursor != null)
         {
             if(cursor.moveToFirst())
             {
-                results[0] = cursor.getString(0) + " " + cursor.getString(1);
-                mID = cursor.getString(2);
-                results[2] = cursor.getString(3);
-            }
-            if(cursor.moveToNext())
-            {
-                results[1] = cursor.getString(0) + " " + cursor.getString(1);
+                mID = cursor.getString(0);
+                results[2] = cursor.getString(1);
             }
             cursor.close();
         }
+
+        String starQuery = "SELECT first_name, last_name FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.movie_id = '"+mID+"' GROUP BY sm.star_id ORDER BY RANDOM() LIMIT 2";
+        cursor = dataBase.rawQuery(starQuery, null);
+        if(cursor != null)
+        {
+            if(cursor.moveToFirst())
+                results[0] = cursor.getString(0) + " " + cursor.getString(1);
+            if(cursor.moveToNext())
+                results[1] = cursor.getString(0) + " " + cursor.getString(1);
+            cursor.close();
+        }
+
+
         String wrongQuery = "SELECT title FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
-                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.movie_id !=" + Integer.parseInt(mID) + " ORDER BY RANDOM() LIMIT 4";
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.movie_id != '" + mID + "' ORDER BY RANDOM() LIMIT 4";
         cursor = dataBase.rawQuery(wrongQuery, null);
         if(cursor != null)
         {
@@ -318,7 +334,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         }
 
         String wrongQuery = "SELECT director FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
-                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE m.id !=" + Integer.parseInt(mID) + " AND s.id != " +Integer.parseInt(sID)+" ORDER BY RANDOM() LIMIT 4";
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE m.id != '" + mID + "' AND s.id != '" +sID+"' ORDER BY RANDOM() LIMIT 4";
         cursor = dataBase.rawQuery(wrongQuery, null);
         if(cursor != null)
         {
@@ -360,7 +376,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 
         }
         String wrongQuery = "SELECT director FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
-                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.star_id !=" + Integer.parseInt(sID) + " ORDER BY RANDOM() LIMIT 1";
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.star_id != '" + sID + "' ORDER BY RANDOM() LIMIT 1";
         cursor = dataBase.rawQuery(wrongQuery, null);
         if(cursor != null)
         {
@@ -392,7 +408,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
             cursor.close();
         }
         String wrongQuery = "SELECT first_name, last_name FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
-                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.star_id !=" + Integer.parseInt(sID) + " ORDER BY RANDOM() LIMIT 4";
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.star_id != '" + sID + "' ORDER BY RANDOM() LIMIT 4";
         cursor = dataBase.rawQuery(wrongQuery, null);
         if(cursor != null)
         {
@@ -414,29 +430,40 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         Cursor cursor;
         String mID = "";
         String sID = "";
-        String movieQuery = "SELECT first_name, last_name, m.id, s.id FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
-                + "ON m.id = sm.movie_id AND sm.star_id = s.id) GROUP BY sm.movie_id HAVING count(*) >4 ORDER BY RANDOM() LIMIT 5";
+        String movieQuery = "SELECT m.id FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) GROUP BY sm.movie_id HAVING count(*) >4 ORDER BY RANDOM() LIMIT 1";
         cursor = dataBase.rawQuery(movieQuery, null);
         if(cursor != null)
         {
+            if(cursor.moveToFirst())
+                mID = cursor.getString(0);
+
+            cursor.close();
+        }
+
+        String starQuery = "SELECT first_name, last_name, s.id FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.movie_id = '"+ mID + "' ORDER BY RANDOM() LIMIT 5";
+        cursor = dataBase.rawQuery(starQuery, null);
+        if(cursor != null)
+        {
             if(cursor.moveToFirst()) {
-                mID = cursor.getString(2);
-                sID = cursor.getString(3);
-                results[0] = cursor.getString(0) +" "+ cursor.getString(1);
+                sID = cursor.getString(2);
+                results[0] = cursor.getString(0) + " " + cursor.getString(1);
             }
             if(cursor.moveToNext())
-                results[2] = cursor.getString(0) + " " + cursor.getString(1);
+                 results[2] = cursor.getString(0) + " " + cursor.getString(1);
             if(cursor.moveToNext())
                 results[3] = cursor.getString(0) + " " + cursor.getString(1);
             if(cursor.moveToNext())
-                results[4] = cursor.getString(0) + " " + cursor.getString(1);
-            if(cursor.moveToNext())
+                 results[4] = cursor.getString(0) + " " + cursor.getString(1);
+             if(cursor.moveToNext())
                 results[5] = cursor.getString(0) + " " + cursor.getString(1);
             cursor.close();
         }
 
+
         String wrongQuery = "SELECT first_name, last_name FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
-                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.movie_id !=" + Integer.parseInt(mID) + " AND sm.star_id !=" + Integer.parseInt(sID)+" ORDER BY RANDOM() LIMIT 1";
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE sm.movie_id != '" + mID + "' AND sm.star_id != '" + sID+"' ORDER BY RANDOM() LIMIT 1";
         cursor = dataBase.rawQuery(wrongQuery, null);
         if(cursor != null)
         {
@@ -470,7 +497,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
         }
 
         String wrongQuery = "SELECT director FROM (movies m JOIN stars_in_movies sm " + "JOIN stars s "
-                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE m.id !=" + Integer.parseInt(mID) + " AND s.id != " +Integer.parseInt(sID)+" ORDER BY RANDOM() LIMIT 4";
+                + "ON m.id = sm.movie_id AND sm.star_id = s.id) WHERE m.id != '" + mID + "' AND s.id != '" + sID +"' ORDER BY RANDOM() LIMIT 4";
         cursor = dataBase.rawQuery(wrongQuery, null);
         if(cursor != null)
         {

@@ -275,7 +275,7 @@ public class QuizTakingActivity extends ActionBarActivity implements View.OnClic
     {
         // and replaces the X's and Y's with the appropriate data.
         int randomQuestionIndex = random.nextInt(allQuestionTemplates.size());
-        //int randomQuestionIndex = 1;
+        //int randomQuestionIndex = 8;
         switch (randomQuestionIndex)
         {
             //"Who directed the movie X?"
