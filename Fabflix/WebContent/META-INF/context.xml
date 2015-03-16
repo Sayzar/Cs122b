@@ -2,7 +2,7 @@
   
  <Resource name="jdbc/moviedb" auth="Container" type="javax.sql.DataSource"
                maxActive="100" maxIdle="30" maxWait="10000"
-               username="testuser" password="testpass" driverClassName="com.mysql.jdbc.Driver"
+               username="root" password="pass123" driverClassName="com.mysql.jdbc.Driver"
                url="jdbc:mysql://localhost:3306/moviedb" ></Resource>
 <ResourceLink name="jdbc/moviedb"
              global="jdbc/moviedb" 
