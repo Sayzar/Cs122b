@@ -24,7 +24,8 @@ public class QuizTakingActivity extends ActionBarActivity implements View.OnClic
 
     public static int numOfCorrectAnswers;
     public static int numOfIncorrectAnswers;
-    private static ArrayList<Integer> timePerQuestion = new ArrayList<>();
+    public static final long duration = 180000;
+    public static ArrayList<Integer> timePerQuestion = new ArrayList<>();
     private Timer checkForOutOfTimeTimer;
 
     private DatabaseHandler db;
@@ -53,7 +54,6 @@ public class QuizTakingActivity extends ActionBarActivity implements View.OnClic
     private static Handler mHandler = new Handler();
     private static long mStart;
     private static long elapsed;
-    private static final long duration = 180000;
     private static boolean outOfTime = false;
 
     private Question currentQuestion;

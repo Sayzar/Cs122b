@@ -49,7 +49,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 startActivity(new Intent(getBaseContext(), QuizTakingActivity.class));
                 break;
             case R.id.quizStatsButton:
-                // TODO: Add quiz stats here.
+                startActivity(new Intent(getBaseContext(), StatisticsActivity.class));
                 break;
             default:
                 break;
